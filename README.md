@@ -1,2 +1,3 @@
 # programming-with-higher-order-logic
-daily kata from Programming with Higher-Order Logic
+examples from Programming with Higher-Order Logic by Dale Miller and Gopalan Nadathur
+https://sites.google.com/site/proghol/
