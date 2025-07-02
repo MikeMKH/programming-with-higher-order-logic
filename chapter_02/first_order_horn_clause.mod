@@ -1,0 +1,12 @@
+module first_order_horn_clause.
+
+  type append list A -> list A -> list A -> o.
+  
+  % append nil L L.
+  % append (X::L1) L2 (X::L3) :- append L1 L2 L3.
+  
+  pi l\ append nil L L.
+  pi x\ pi l1\ pi l2\ pi l3\
+    append (x::l1) l2 (x::l3) :- append l1 l2 l3.
+
+end
