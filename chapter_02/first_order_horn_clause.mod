@@ -8,5 +8,12 @@ module first_order_horn_clause.
   pi l\ append nil L L.
   pi x\ pi l1\ pi l2\ pi l3\
     append (x::l1) l2 (x::l3) :- append l1 l2 l3.
+    
+  type sublist list A -> list A -> o.
+  
+  % sublist L K :- append _ T K, append L _ T.
+  
+  pi l\ pi k\
+    sublist l k :- append _ T k, append l _ T.
 
 end
