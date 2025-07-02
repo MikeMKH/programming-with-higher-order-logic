@@ -15,5 +15,20 @@ module first_order_horn_clause.
   
   pi l\ pi k\
     sublist l k :- append _ T k, append l _ T.
+   
+  kind bool type.
+  type neg bool -> bool.
+  type and, or, imp bool -> bool -> bool.
+  type ident bool -> bool -> o.
+  
+  % ident (neg B  ) (neg D  ) :- ident B D.
+  % ident (and B C) (and D E) :- ident B D, ident C E.
+  % ident (or  B C) (or  D E) :- ident B D, ident C E.
+  % ident (imp B C) (imp D E) :- ident B D, ident C E.
+  
+  ident (neg B  ) (neg D  ) :- ident B D.
+  ident (and B C) (and D E) &
+  ident (or  B C) (or  D E) &
+  ident (imp B C) (imp D E) :- ident B D, ident C E.
 
 end
