@@ -32,3 +32,69 @@ module first_order_horn_clause.
   ident (imp B C) (imp D E) :- ident B D, ident C E.
 
 end
+
+% [first_order_horn_clause] ?- (ident (or T F) (and T T)).
+
+% no (more) solutions
+
+% [first_order_horn_clause] ?- sigma X\ sigma Y\ append X Y (1 :: 2 :: nil).
+
+% yes
+
+% [first_order_horn_clause] ?- sigma Y\ append X Y (1 :: 2 :: nil).
+
+% The answer substitution:
+% X = nil
+
+% More solutions (y/n)? y
+
+% The answer substitution:
+% X = 1 :: nil
+
+% More solutions (y/n)? y
+
+% The answer substitution:
+% X = 1 :: 2 :: nil
+
+% More solutions (y/n)? y
+
+% no (more) solutions
+
+% [first_order_horn_clause] ?- append _ _ (1 :: nil).
+
+% yes
+
+% [first_order_horn_clause] ?- append (1 :: nil) (2 :: nil) (3 :: nil).
+
+% no (more) solutions
+
+% [first_order_horn_clause] ?- append (1 :: nil) (2 :: nil) (1 :: 2 :: nil).
+
+% yes
+
+% [first_order_horn_clause] ?- append (1 :: nil) (2 :: nil) X.
+
+% The answer substitution:
+% X = 1 :: 2 :: nil
+
+% More solutions (y/n)? y
+
+% no (more) solutions
+
+% [first_order_horn_clause] ?- sigma X\ append (1 :: nil) (2 :: nil) X.
+
+% yes
+
+% [first_order_horn_clause] ?- sigma Y\ append X Y (1 :: nil).
+
+% The answer substitution:
+% X = nil
+
+% More solutions (y/n)? y
+
+% The answer substitution:
+% X = 1 :: nil
+
+% More solutions (y/n)? y
+
+% no (more) solutions
