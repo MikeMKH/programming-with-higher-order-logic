@@ -1,14 +1,13 @@
 module link_goals_and_clauses.
-  type reverse  list A -> list A -> o.
-  type rev      list A -> list A -> list A -> o.
+  type reverse, rev list A -> list A -> o.
   
   reverse L K :-
-    ((pi L\ rev nil L L) &
-     (pi X\ pi L\ pi K\ pi M\ rev (X::L) K M :- rev L K (X::M)))
-       => rev L K nil.
+    (rev nil K &
+     (pi X\ pi L\ pi K\ rev (X::L) K :- rev L (X::K)))
+       => rev L nil.
   
-  rev nil L L.
-  rev (X::L) K M :- rev L K (X::M).
+  rev nil K.
+  rev (X::L) K :- rev L (X::K).
 end
 
 % [link_goals_and_clauses] ?- reverse (1::2::nil) P.
@@ -20,11 +19,6 @@ end
 
 % yes
 
-% [link_goals_and_clauses] ?- rev (1::2::nil) P nil.
-
-% The answer substitution:
-% P = 2 :: 1 :: nil
-
-% More solutions (y/n)? n
+% [link_goals_and_clauses] ?- rev (1::2::nil) nil.
 
 % yes
