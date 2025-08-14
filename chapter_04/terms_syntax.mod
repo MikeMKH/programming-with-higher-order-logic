@@ -8,3 +8,9 @@ end
 % [terms_syntax] ?- example.
 
 % no (more) solutions
+
+% no (more) solutions
+
+% [terms_syntax] ?- foreach (x\ x > 5, x < 9) (Y::nil).
+
+% no (more) solutions
