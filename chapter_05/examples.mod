@@ -110,3 +110,24 @@ end
 % [examples] ?- sym adj b a.
 
 % yes
+
+% this example with foreach and sigma does not work
+% [examples] ?- foreach (x\ sigma y\ age x y) (ned::sue::bob::jay::nil) L.
+% (1,0) : Error : operator is not a function
+%         operator type: o
+%         in expression: foreach (x\ sigma (y\ age x y)) (ned :: sue :: bob :: jay :: nil) L.
+
+% [examples] ?- halt.
+
+% [examples] ?- foreach (x\ age x A) (ned::bob::sue::nil).
+
+% no (more) solutions
+
+% [examples] ?- foreach (x\ age x A) (ned::bob::nil).
+
+% The answer substitution:
+% A = 23
+
+% More solutions (y/n)? y
+
+% no (more) solutions
