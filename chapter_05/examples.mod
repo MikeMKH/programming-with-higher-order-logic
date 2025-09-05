@@ -22,6 +22,22 @@ module examples.
   
   age bob 23 & age sue 24 & age ned 23 & age jay 25.
   male bob   & female sue & male ned   & nonbinary jay.
+  
+  type ref, sym, trans (A -> A -> o) -> A -> A -> o.
+  
+  ref   R X Y :- X = Y; R X Y.
+  sym   R X Y :- R X Y; R Y X.
+  trans R X Y :- R X Y.
+  trans R X Z :- R X Y, R Y Z.
+  
+  kind node type.
+  type a, b, c, d, e node.
+  type adj           node -> node -> o.
+  
+  % a -> b -> c -> e
+  %      \   /
+  %        d
+  adj a b & adj b c & adj b d & adj d c & adj c e.
 end
 
 % [examples] ?- mappred age (ned::bob::sue::jay::nil) L.
@@ -78,3 +94,19 @@ end
 % [examples] ?- foreach female (ned::sue::bob::jay::nil).
 
 % no (more) solutions
+
+% [examples] ?- trans adj a d.
+
+% yes
+
+% [examples] ?- trans adj b c.
+
+% yes
+
+% [examples] ?- trans adj d b.
+
+% no (more) solutions
+
+% [examples] ?- sym adj b a.
+
+% yes

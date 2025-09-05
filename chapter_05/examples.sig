@@ -7,4 +7,10 @@ kind name                    type.
 type bob, sue, ned, jay      name.
 type age                     name -> int -> o.
 type male, female, nonbinary name -> o.
+
+type ref, sym, trans (A -> A -> o) -> A -> A -> o.
+
+kind node type.
+type a, b, c, d, e node.
+type adj           node -> node -> o.
 end
