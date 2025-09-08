@@ -38,6 +38,16 @@ module examples.
   %      \   /
   %        d
   adj a b & adj b c & adj b d & adj d c & adj c e.
+  
+  type union   (A -> B -> o) -> (A -> B -> o) -> A -> B -> o.
+  type compose (A -> B -> o) -> (B -> C -> o) -> A -> C -> o.
+  type foldl   (A -> B -> B -> o) -> list A -> B -> B -> o.
+  
+  union   R S X Y :- R X Y; S X Y.
+  compose R S X Z :- R X Y, S Y Z.
+  
+  foldl P nil    X X.
+  foldl P (Y::L) X Z :- P Y X YX, foldl P L YX Z.
 end
 
 % [examples] ?- mappred age (ned::bob::sue::jay::nil) L.
@@ -131,3 +141,7 @@ end
 % More solutions (y/n)? y
 
 % no (more) solutions
+
+% [examples] ?- union adj adj a b.
+
+% yes

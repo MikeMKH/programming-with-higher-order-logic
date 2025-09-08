@@ -13,4 +13,8 @@ type ref, sym, trans (A -> A -> o) -> A -> A -> o.
 kind node type.
 type a, b, c, d, e node.
 type adj           node -> node -> o.
+
+type union   (A -> B -> o) -> (A -> B -> o) -> A -> B -> o.
+type compose (A -> B -> o) -> (B -> C -> o) -> A -> C -> o.
+type foldl   (A -> B -> B -> o) -> list A -> B -> B -> o.
 end
