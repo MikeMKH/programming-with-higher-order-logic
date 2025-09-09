@@ -48,6 +48,19 @@ module examples.
   
   foldl P nil    X X.
   foldl P (Y::L) X Z :- P Y X YX, foldl P L YX Z.
+  
+  kind stack         type -> type.
+  type emp           stack A.
+  type stk           A -> stack A -> stack A.
+  type empty         stack A -> o.
+  type enter, remove A -> stack A -> stack A -> o.
+  type reverse       list A -> list A -> o.
+  
+  empty  emp.
+  enter  X S (stk X S).
+  remove X (stk X S) S.
+  
+  reverse L K :- compose (foldl enter L) (foldl remove K) emp emp.
 end
 
 % [examples] ?- mappred age (ned::bob::sue::jay::nil) L.
@@ -143,5 +156,28 @@ end
 % no (more) solutions
 
 % [examples] ?- union adj adj a b.
+
+% yes
+
+% [examples] ?- reverse (1::2::3::nil) YS.
+
+% The answer substitution:
+% YS = 3 :: 2 :: 1 :: nil
+
+% More solutions (y/n)? y
+
+% no (more) solutions
+
+% [examples] ?- enter 1 emp S, enter 2 S S1, remove Y S1 S0, remove X S0 Z.
+
+% The answer substitution:
+% Z = emp
+% X = 1
+% S0 = stk 1 emp
+% Y = 2
+% S1 = stk 2 (stk 1 emp)
+% S = stk 1 emp
+
+% More solutions (y/n)? n
 
 % yes

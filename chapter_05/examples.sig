@@ -17,4 +17,11 @@ type adj           node -> node -> o.
 type union   (A -> B -> o) -> (A -> B -> o) -> A -> B -> o.
 type compose (A -> B -> o) -> (B -> C -> o) -> A -> C -> o.
 type foldl   (A -> B -> B -> o) -> list A -> B -> B -> o.
+
+kind stack         type -> type.
+type emp           stack A.
+type stk           A -> stack A -> stack A.
+type empty         stack A -> o.
+type enter, remove A -> stack A -> stack A -> o.
+type reverse       list A -> list A -> o.
 end
