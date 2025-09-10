@@ -61,6 +61,18 @@ module examples.
   remove X (stk X S) S.
   
   reverse L K :- compose (foldl enter L) (foldl remove K) emp emp.
+  
+  kind i                             type.
+  type jane, mary, john              i.
+  type mother, father, wife, husband i -> i -> o.
+  type primrel, rel                  (i -> i -> o) -> o.
+  
+  primrel father & primrel mother & primrel wife & primrel husband.
+  
+  rel R :- primrel R.
+  rel (x\y\ sigma z\ R x z, S z y) :- primrel R, primrel S.
+  
+  mother jane mary & wife john jane.
 end
 
 % [examples] ?- mappred age (ned::bob::sue::jay::nil) L.
@@ -181,3 +193,12 @@ end
 % More solutions (y/n)? n
 
 % yes
+
+% [examples] ?- rel R, R john mary.
+
+% The answer substitution:
+% R = W1\ W2\ sigma (W3\ wife W1 W3 , mother W3 W2)
+
+% More solutions (y/n)? y
+
+% no (more) solutions

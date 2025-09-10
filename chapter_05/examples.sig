@@ -24,4 +24,9 @@ type stk           A -> stack A -> stack A.
 type empty         stack A -> o.
 type enter, remove A -> stack A -> stack A -> o.
 type reverse       list A -> list A -> o.
+
+kind i                             type.
+type jane, mary, john              i.
+type mother, father, wife, husband i -> i -> o.
+type primrel, rel                  (i -> i -> o) -> o.
 end
