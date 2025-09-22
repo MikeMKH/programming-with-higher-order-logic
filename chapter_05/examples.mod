@@ -82,6 +82,17 @@ module examples.
   or P Q :- P.
   or P Q :- Q.
   exists B :- B T.
+  
+  type if    o -> o -> o -> o.
+  if P Q R :- P, !, Q.
+  if P Q R :- R.
+  
+  type not'  o -> o.
+  not' P :- P, !, fail.
+  not' P.
+  
+  type not'' o -> o.
+  not'' P :- if P fail true.
 end
 
 % [examples] ?- mappred age (ned::bob::sue::jay::nil) L.
@@ -230,3 +241,42 @@ end
 % [examples] ?- or ff tt.
 
 % yes
+
+% [examples] ?- X = 2, not (1 = X).
+
+% The answer substitution:
+% X = 2
+
+% More solutions (y/n)? y
+
+% no (more) solutions
+
+% [examples] ?- X = 2, not' (1 = X).
+
+% The answer substitution:
+% X = 2
+
+% More solutions (y/n)? y
+
+% no (more) solutions
+
+% [examples] ?- X = 2, not'' (1 = X).
+
+% The answer substitution:
+% X = 2
+
+% More solutions (y/n)? y
+
+% no (more) solutions
+
+% [examples] ?- not (1 = X), X = 2.
+
+% no (more) solutions
+
+% [examples] ?- not' (1 = X), X = 2.
+
+% no (more) solutions
+
+% [examples] ?- not'' (1 = X), X = 2.
+
+% no (more) solutions

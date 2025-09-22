@@ -33,4 +33,8 @@ type primrel, rel                  (i -> i -> o) -> o.
 type tt, ff o.
 type or     o -> o -> o.
 type exists (A -> o) -> o.
+
+type if    o -> o -> o -> o.
+type not'  o -> o.
+type not'' o -> o.
 end
