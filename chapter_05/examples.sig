@@ -29,4 +29,8 @@ kind i                             type.
 type jane, mary, john              i.
 type mother, father, wife, husband i -> i -> o.
 type primrel, rel                  (i -> i -> o) -> o.
+
+type tt, ff o.
+type or     o -> o -> o.
+type exists (A -> o) -> o.
 end

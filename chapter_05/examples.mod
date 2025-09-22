@@ -73,6 +73,15 @@ module examples.
   rel (x\y\ sigma z\ R x z, S z y) :- primrel R, primrel S.
   
   mother jane mary & wife john jane.
+  
+  type tt, ff o.
+  type or     o -> o -> o.
+  type exists (A -> o) -> o.
+  
+  tt.
+  or P Q :- P.
+  or P Q :- Q.
+  exists B :- B T.
 end
 
 % [examples] ?- mappred age (ned::bob::sue::jay::nil) L.
@@ -202,3 +211,22 @@ end
 % More solutions (y/n)? y
 
 % no (more) solutions
+
+% [examples] ?- or tt Y.
+
+% The answer substitution:
+% Y = Y
+
+% More solutions (y/n)? y
+% Error: solve: Ill-formed goal: uninstantiated variable as head.
+
+% no (more) solutions
+
+% [examples] ?- or ff Q.
+% Error: solve: Ill-formed goal: uninstantiated variable as head.
+
+% no (more) solutions
+
+% [examples] ?- or ff tt.
+
+% yes
