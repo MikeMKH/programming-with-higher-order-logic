@@ -37,4 +37,11 @@ type exists (A -> o) -> o.
 type if    o -> o -> o -> o.
 type not'  o -> o.
 type not'' o -> o.
+
+kind i              type.
+type a1, b1, c1, d1 i.
+type g1             i -> i -> i.
+
+type mapfun    (A -> B) -> list A -> list B -> o.
+type reducefun (A -> B -> B) -> list A -> B -> B -> o.
 end

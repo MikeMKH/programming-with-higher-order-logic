@@ -93,6 +93,20 @@ module examples.
   
   type not'' o -> o.
   not'' P :- if P fail true.
+  
+  kind i              type.
+  type a1, b1, c1, d1 i.
+  type g1             i -> i -> i.
+  
+  
+  type mapfun    (A -> B) -> list A -> list B -> o.
+  type reducefun (A -> B -> B) -> list A -> B -> B -> o.
+  
+  mapfun F nil nil.
+  mapfun F (X::L) ((F X)::K) :- mapfun F L K.
+  
+  reducefun F nil Z Z.
+  reducefun F (H::T) Z (F H R) :- reducefun F T Z R.
 end
 
 % [examples] ?- mappred age (ned::bob::sue::jay::nil) L.
@@ -278,5 +292,73 @@ end
 % no (more) solutions
 
 % [examples] ?- not'' (1 = X), X = 2.
+
+% no (more) solutions
+
+% [examples] ?- mapfun (x\ g1 a1 x) (a1::b1::nil) L.
+
+% The answer substitution:
+% L = g1 a1 a1 :: g1 a1 b1 :: nil
+
+% More solutions (y/n)? y
+
+% no (more) solutions
+
+% [examples] ?- mapfun F (a1::b1::nil) ((g1 a1 a1)::(g1 a1 b1)::nil).
+
+% The answer substitution:
+% F = F
+
+% The remaining disagreement pairs list:
+% <F b1, g1 a1 b1>
+% <F a1, g1 a1 a1>
+
+% More solutions (y/n)? y
+
+% no (more) solutions
+
+% [examples] ?- mapfun F (a1::b1::nil) (c1::d1::nil).
+
+% The answer substitution:
+% F = F
+
+% The remaining disagreement pairs list:
+% <F b1, d1>
+% <F a1, c1>
+
+% More solutions (y/n)? y
+
+% no (more) solutions
+
+% [examples] ?- reducefun (x\y\ x + y) (3::4::8::nil) 6 R.
+
+% The answer substitution:
+% R = 3 + (4 + (8 + 6))
+
+% More solutions (y/n)? y
+
+% no (more) solutions
+
+% [examples] ?- reducefun F (4::8::nil) 6 (1 + (4 + (1 + (8 + 6)))).
+
+% The answer substitution:
+% F = F
+
+% The remaining disagreement pairs list:
+% <F 4 (F 8 6), 1 + (4 + (1 + (8 + 6)))>
+
+% More solutions (y/n)? y
+
+% no (more) solutions
+
+% [examples] ?- pi z\ reducefun F (4::8::nil) z (1 + (4 + (1 + (8 + z)))).
+
+% The answer substitution:
+% F = F
+
+% The remaining disagreement pairs list:
+% <F 4 (F 8 <constant>), 1 + (4 + (1 + (8 + <constant>)))>
+
+% More solutions (y/n)? y
 
 % no (more) solutions
