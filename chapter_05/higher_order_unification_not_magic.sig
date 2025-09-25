@@ -4,4 +4,6 @@ type a,b    i.
 type f      i -> i -> i.
 
 type extract_a i -> (i -> i) -> o.
+
+type rewrite int -> int -> o.
 end
