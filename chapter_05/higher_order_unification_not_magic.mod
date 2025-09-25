@@ -4,16 +4,15 @@ module higher_order_unification_not_magic.
   type f      i -> i -> i.
   
   type extract_a i -> (i -> i) -> o.
-  extract_a (F a) F :- !.
+  extract_a a x\ x.
+  extract_a b x\ b.
+  extract_a (f T S) (x\ f (U x) (V x)) :- extract_a T U, extract_a S V.
 end
 
 % [higher_order_unification_not_magic] ?- extract_a (f a (f a b)) F.
 
 % The answer substitution:
-% F = F
-
-% The remaining disagreement pairs list:
-% <F a, f a (f a b)>
+% F = W1\ f W1 (f W1 b)
 
 % More solutions (y/n)? y
 
