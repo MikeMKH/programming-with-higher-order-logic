@@ -107,6 +107,9 @@ module examples.
   
   reducefun F nil Z Z.
   reducefun F (H::T) Z (F H R) :- reducefun F T Z R.
+  
+  type eq_pred (A -> o) -> (A -> o) -> o.
+  eq_pred R R.
 end
 
 % [examples] ?- mappred age (ned::bob::sue::jay::nil) L.
@@ -362,3 +365,11 @@ end
 % More solutions (y/n)? y
 
 % no (more) solutions
+
+% [examples] ?- eq_pred (x\ 2 = 1 + x) (x\ 2 = x + 1).
+
+% no (more) solutions
+
+% [examples] ?- eq_pred (x\ 2 = 1 + x) (x\ 2 = 1 + x).
+
+% yes

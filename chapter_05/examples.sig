@@ -44,4 +44,6 @@ type g1             i -> i -> i.
 
 type mapfun    (A -> B) -> list A -> list B -> o.
 type reducefun (A -> B -> B) -> list A -> B -> B -> o.
+
+type eq_pred (A -> o) -> (A -> o) -> o.
 end
