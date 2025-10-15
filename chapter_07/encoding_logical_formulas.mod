@@ -16,4 +16,8 @@ type   f   term -> term.
 type   a   term.
 
 type  all, some      (term -> form) -> form.
+
+kind   tm     type.
+type   app    tm -> tm -> tm.
+type   abs    (tm -> tm) -> tm.
 end
