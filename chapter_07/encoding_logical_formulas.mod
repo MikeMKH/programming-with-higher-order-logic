@@ -47,6 +47,14 @@ atom (adj _ _) & atom (path _ _).
 prog ((adj a b) && (adj b c) &&
       (all x\ all y\ (adj x y) ==> (path x y)) &&
       (all x\ all y\ all z\  (adj x y) && (path y z) ==> (path x z))).
+
+type cbn, cbv   tm -> tm -> o.
+
+cbn (abs R) (abs R).
+cbn (app M N) V :- cbn M (abs R), cbn (R N) V.
+
+cbv (abs R) (abs R).
+cbv (app M N) V :- cbv M (abs R), cbv N U, cbv (R U) V.
 end
 
 % [encoding_logical_formulas] ?- prog P, interp P (path a X).
@@ -64,3 +72,15 @@ end
 % More solutions (y/n)? y
 
 % no (more) solutions
+
+% [encoding_logical_formulas] ?- cbn (app (abs x\ abs w\w) (app (abs x\ app x x) (abs x\ app x x))) V.
+
+% The answer substitution:
+% V = abs (W1\ W1)
+
+% More solutions (y/n)? y
+
+% no (more) solutions
+
+% [encoding_logical_formulas] ?- cbv (app (abs x\ abs w\w) (app (abs x\ app x x) (abs x\ app x x))) V.
+% Simulator: Heap overflow.

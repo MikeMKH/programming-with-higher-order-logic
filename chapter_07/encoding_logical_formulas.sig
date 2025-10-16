@@ -27,4 +27,6 @@ type atom        form -> o.
 type a, b, c    term.
 type adj, path  term -> term -> form.
 type prog       form -> o.
+
+type cbn, cbv   tm -> tm -> o.
 end
