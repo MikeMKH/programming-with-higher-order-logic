@@ -33,6 +33,33 @@ repeat Pred M M.
 reduce' M N :- repeat red1 M N.
 
 redex (abs x\ app M x) M.
+
+kind path type.
+type bnd           (path -> path) -> path.
+type left, right   path -> path.
+type path          tm -> path -> o.
+
+path (app M _) (left  P) &
+path (app _ M) (right P) :- path M P.
+path (abs R) (bnd S) :- pi x\ pi p\ path x p => path (R x) (S p).
+
+type foreach, forsome (A -> o) -> list A -> o.
+foreach P nil.
+foreach P (X::L) :- P X, foreach P L.
+
+type beta     tm -> (tm -> tm) -> tm.
+type addbeta  tm -> tm -> o.
+type bpath    tm -> path -> o.
+
+bpath (app M _) (left  P) &
+bpath (app _ M) (right P) :- bpath M P.
+bpath (abs R)   (bnd S)   :- pi x\ pi p\ bpath x p => bpath (R x) (S p).
+bpath (beta N R) P        :- pi x\ (pi Q\ bpath x Q :- bpath N Q) => bpath (R x) P.
+
+addbeta (app (abs R) N) (beta M S) :- addbeta (abs R) (abs S), addbeta N M.
+addbeta (app (app M N) P) (app O Q) :- addbeta (app M N) O, addbeta P Q.
+addbeta (abs R) (abs S) :-
+  pi x\ (pi M\ pi N\ addbeta (app x M) (app x N) :- addbeta M N) => (addbeta x x) => addbeta (R x) (S x).
 end
 
 % [mobility_of_binders] ?- (term (abs y\ app y y)).
@@ -72,3 +99,54 @@ end
 % More solutions (y/n)? n
 
 % yes
+
+% [mobility_of_binders] ?- foreach (path N) ((bnd u\ left u) :: (bnd u\ right (bnd v\ left v)) :: (bnd u\ right (bnd v\ right u)) :: nil).
+
+% The answer substitution:
+% N = abs (W1\ app W1 (abs (W2\ app W2 W1)))
+
+% More solutions (y/n)? y
+
+% no (more) solutions
+
+% [mobility_of_binders] ?- sigma B\ addbeta (app (abs x\x) (abs x\x)) B, bpath B Path.
+
+% The answer substitution:
+% Path = bnd (W1\ W1)
+
+% More solutions (y/n)? y
+
+% no (more) solutions
+
+% [mobility_of_binders] ?- foreach (P\ path T P) (bnd (W1\ W1) :: nil).
+
+% The answer substitution:
+% T = abs (W1\ W1)
+
+% More solutions (y/n)? y
+
+% no (more) solutions
+
+% [mobility_of_binders] ?- sigma K\ sigma S\ sigma B\  K = (abs x\ abs y\ x), S = (abs x\ abs y\ abs z\ app (app x z) (app y z)), addbeta (app K (app S K)) B, bpath B Path.
+
+% The answer substitution:
+% Path = bnd (W1\ bnd (W2\ bnd (W3\ left (left (bnd (W4\ bnd (W5\ W4)))))))
+
+% More solutions (y/n)? y
+
+% The answer substitution:
+% Path = bnd (W1\ bnd (W2\ bnd (W3\ left (right W3))))
+
+% More solutions (y/n)? y
+
+% The answer substitution:
+% Path = bnd (W1\ bnd (W2\ bnd (W3\ right (left W2))))
+
+% More solutions (y/n)? y
+
+% The answer substitution:
+% Path = bnd (W1\ bnd (W2\ bnd (W3\ right (right W3))))
+
+% More solutions (y/n)? y
+
+% no (more) solutions
