@@ -60,6 +60,14 @@ addbeta (app (abs R) N) (beta M S) :- addbeta (abs R) (abs S), addbeta N M.
 addbeta (app (app M N) P) (app O Q) :- addbeta (app M N) O, addbeta P Q.
 addbeta (abs R) (abs S) :-
   pi x\ (pi M\ pi N\ addbeta (app x M) (app x N) :- addbeta M N) => (addbeta x x) => addbeta (R x) (S x).
+
+kind ty type.
+type arr      ty -> ty -> ty.
+type typeof   tm -> ty -> o.
+type i        ty.
+
+typeof (app M N) A :- typeof M (arr B A), typeof N B.
+typeof (abs M) (arr A B) :- pi x\ typeof x A => typeof (M x) B.
 end
 
 % [mobility_of_binders] ?- (term (abs y\ app y y)).
@@ -146,6 +154,41 @@ end
 
 % The answer substitution:
 % Path = bnd (W1\ bnd (W2\ bnd (W3\ right (right W3))))
+
+% More solutions (y/n)? y
+
+% no (more) solutions
+
+% [mobility_of_binders] ?- typeof (abs x\ abs y\ abs z\ app (app x z) (app y z)) Ty.
+
+% The answer substitution:
+% Ty = arr (arr _T1 (arr _T2 _T3)) (arr (arr _T1 _T2) (arr _T1 _T3))
+
+% More solutions (y/n)? y
+
+% no (more) solutions
+
+% [mobility_of_binders] ?- typeof (abs x\x) Ty.
+
+% The answer substitution:
+% Ty = arr _T1 _T1
+
+% More solutions (y/n)? y
+
+% no (more) solutions
+
+% [mobility_of_binders] ?- typeof (abs x\ app x x) Ty.
+
+% no (more) solutions
+
+% [mobility_of_binders] ?- typeof (abs x\x) (arr i i).
+
+% yes
+
+% [mobility_of_binders] ?- typeof (abs x\x) (arr i Ty).
+
+% The answer substitution:
+% Ty = i
 
 % More solutions (y/n)? y
 

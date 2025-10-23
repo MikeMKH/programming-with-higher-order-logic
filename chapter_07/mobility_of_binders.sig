@@ -21,4 +21,9 @@ type foreach, forsome (A -> o) -> list A -> o.
 type beta     tm -> (tm -> tm) -> tm.
 type addbeta  tm -> tm -> o.
 type bpath    tm -> path -> o.
+
+kind ty type.
+type arr      ty -> ty -> ty.
+type typeof   tm -> ty -> o.
+type i        ty.
 end
