@@ -68,6 +68,18 @@ type i        ty.
 
 typeof (app M N) A :- typeof M (arr B A), typeof N B.
 typeof (abs M) (arr A B) :- pi x\ typeof x A => typeof (M x) B.
+
+kind deb    type.
+type ab     deb -> deb.
+type ap     deb -> deb -> deb.
+type deb    int -> deb.
+
+type trans    int -> tm -> deb -> o.
+type depth    int -> tm -> o.
+
+trans D (abs M)   (ab P)   :- pi c\ depth D c => (E is D + 1, trans E (M c) P).
+trans D (app M N) (ap P Q) :- trans D M P, trans D N Q.
+trans D X         (deb E)  :- depth N X, E is (D - N).
 end
 
 % [mobility_of_binders] ?- (term (abs y\ app y y)).
@@ -189,6 +201,42 @@ end
 
 % The answer substitution:
 % Ty = i
+
+% More solutions (y/n)? y
+
+% no (more) solutions
+
+% [mobility_of_binders] ?- trans 1 (abs x\ app x (abs y\ app x (abs w\ app w x))) D.
+
+% The answer substitution:
+% D = ab (ap (deb 1) (ab (ap (deb 2) (ab (ap (deb 1) (deb 3))))))
+
+% More solutions (y/n)? y
+
+% no (more) solutions
+
+% [mobility_of_binders] ?- trans 1 P (ab (ap (deb 1) (ab (ap (deb 2) (ab (ap (deb 1) (deb 3))))))).
+
+% The answer substitution:
+% P = abs (W1\ app W1 (abs (W2\ app W1 (abs (W3\ app W3 W1)))))
+
+% More solutions (y/n)? y
+
+% no (more) solutions
+
+% [mobility_of_binders] ?- trans 1 (abs x\ abs y\ abs z\ y) P.
+
+% The answer substitution:
+% P = ab (ab (ab (deb 2)))
+
+% More solutions (y/n)? y
+
+% no (more) solutions
+
+% [mobility_of_binders] ?- trans 2 (abs y\ abs z\ y) P1.
+
+% The answer substitution:
+% P1 = ab (ab (deb 2))
 
 % More solutions (y/n)? y
 

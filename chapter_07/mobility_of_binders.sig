@@ -26,4 +26,12 @@ kind ty type.
 type arr      ty -> ty -> ty.
 type typeof   tm -> ty -> o.
 type i        ty.
+
+kind deb    type.
+type ab     deb -> deb.
+type ap     deb -> deb -> deb.
+type deb    int -> deb.
+
+type trans    int -> tm -> deb -> o.
+type depth    int -> tm -> o.
 end
