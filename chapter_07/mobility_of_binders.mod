@@ -80,6 +80,14 @@ type depth    int -> tm -> o.
 trans D (abs M)   (ab P)   :- pi c\ depth D c => (E is D + 1, trans E (M c) P).
 trans D (app M N) (ap P Q) :- trans D M P, trans D N Q.
 trans D X         (deb E)  :- depth N X, E is (D - N).
+
+type copy  tm -> tm -> o.
+type subst (tm -> tm) -> tm -> tm -> o.
+
+copy (app M N) (app P Q) :- copy M P, copy N Q.
+copy (abs M)   (abs N)   :- pi x\ copy x x => copy (M x) (N x).
+
+subst M T S :- pi x\ copy x T => copy (M x) S.
 end
 
 % [mobility_of_binders] ?- (term (abs y\ app y y)).
@@ -237,6 +245,15 @@ end
 
 % The answer substitution:
 % P1 = ab (ab (deb 2))
+
+% More solutions (y/n)? y
+
+% no (more) solutions
+
+% [mobility_of_binders] ?- copy (abs x\ abs y\ app y x) M.
+
+% The answer substitution:
+% M = abs (W1\ abs (W2\ app W2 W1))
 
 % More solutions (y/n)? y
 

@@ -34,4 +34,8 @@ type deb    int -> deb.
 
 type trans    int -> tm -> deb -> o.
 type depth    int -> tm -> o.
+
+type copy  tm -> tm -> o.
+type subst (tm -> tm) -> tm -> tm -> o.
+
 end
