@@ -34,4 +34,40 @@ adj_tac (adj d a) trueg  &  adj_tac (adj d e) trueg.
 path_base_tac  (path X Y) (adj X Y).
 path_rec_tac   (path X Y) ((adj X Z) cc (path Z Y)).
 
+kind term, form  type.
+type sq    list form -> form -> goal.
+primgoal (sq _ _).
+
+type    ff,                            % encoding the false proposition
+        tt    form.                    % encoding the true proposition 
+type    &&,                            % encoding conjunction
+        !!,                            % encoding disjunction
+        ==>   form -> form -> form.    % encoding implication
+
+infixl  &&  5.        
+infixl  !!  4.       
+infixr  ==> 3.
+
+type memb_and_rest  A -> list A -> list A -> o.
+type  all, some     (term -> form) -> form.
+
+memb_and_rest X (X::L) L.
+memb_and_rest X (Y::K) (Y::L) :- memb_and_rest X K L.
+
+type initial, and_r, imp_r, all_r, and_l, imp_l, all_l, all_l'
+                      goal -> goal -> o.
+
+initial (sq Gamma A) trueg :- memb_and_rest A Gamma _.
+and_r   (sq Gamma (A &&  B)) ((sq Gamma A)  cc (sq Gamma B)).
+imp_r   (sq Gamma (A ==> B)) (sq (A::Gamma) B).
+all_r   (sq Gamma (all A)) (allg x\ sq Gamma (A x)).
+and_l   (sq Gamma A) (sq (B::C::Gamma') A) :-
+               memb_and_rest (B && C) Gamma Gamma'.
+imp_l   (sq Gamma A) ((sq Gamma B) cc (sq (C::Gamma') A)) :-
+               memb_and_rest (B ==> C) Gamma Gamma'.
+all_l   (sq Gamma A) (sq ((B T)::Gamma) A) :- 
+               memb_and_rest (all B) Gamma Gamma'.
+all_l'  (sq Gamma A) (sq ((B T)::Gamma') A) :- 
+               memb_and_rest (all B) Gamma Gamma'.
+
 end
