@@ -42,6 +42,8 @@ type then, orelse, orelse!
                   (goal -> goal -> o) -> (goal -> goal -> o) -> goal -> goal -> o.
 
 type a', b', c', d', e'  form.
+type p', q'              term -> form.  % a predicate of one argument
+type f'                  term -> term.  % a term constructor
 type invertible   goal -> goal -> o.
 
 end

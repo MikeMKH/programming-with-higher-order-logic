@@ -92,6 +92,8 @@ repeat   Tac       In Out :- orelse (then Tac (repeat Tac)) idtac In Out.
 try      Tac       In Out :- orelse Tac idtac In Out.
 
 type a', b', c', d', e'  form.
+type p', q'              term -> form.  % a predicate of one argument
+type f'                  term -> term.  % a term constructor
 invertible         In Out :- repeat (orelse and_r (orelse and_l (orelse imp_r all_r))) In Out.
 
 end
@@ -135,6 +137,30 @@ end
 
 % The answer substitution:
 % Out = sq nil (a' && (a' ==> b') ==> a' && b')
+
+% More solutions (y/n)? y
+
+% no (more) solutions
+
+% [goals_tactics] ?- invertible (sq [] ((all x\ (p' x) ==> (p' (f' x))) ==> (all x\ (p' x) ==> (p' (f' (f' x)))))) Out.
+
+% The answer substitution:
+% Out = allg (W1\ sq (p' W1 :: all (W2\ p' W2 ==> p' (f' W2)) :: nil) (p' (f' (f' W1))))
+
+% More solutions (y/n)? y
+
+% The answer substitution:
+% Out = allg (W1\ sq (all (W2\ p' W2 ==> p' (f' W2)) :: nil) (p' W1 ==> p' (f' (f' W1))))
+
+% More solutions (y/n)? y
+
+% The answer substitution:
+% Out = sq (all (W1\ p' W1 ==> p' (f' W1)) :: nil) (all (W1\ p' W1 ==> p' (f' (f' W1))))
+
+% More solutions (y/n)? y
+
+% The answer substitution:
+% Out = sq nil (all (W1\ p' W1 ==> p' (f' W1)) ==> all (W1\ p' W1 ==> p' (f' (f' W1))))
 
 % More solutions (y/n)? y
 
