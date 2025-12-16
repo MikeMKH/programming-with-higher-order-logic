@@ -95,3 +95,47 @@ type a', b', c', d', e'  form.
 invertible         In Out :- repeat (orelse and_r (orelse and_l (orelse imp_r all_r))) In Out.
 
 end
+
+% [goals_tactics] ?- invertible (sq [] ((a' && (a' ==> b')) ==> (a' && b'))) Out.
+
+% The answer substitution:
+% Out = sq (a' :: (a' ==> b') :: nil) a' cc sq (a' :: (a' ==> b') :: nil) b'
+
+% More solutions (y/n)? y
+
+% The answer substitution:
+% Out = sq (a' :: (a' ==> b') :: nil) a' cc sq ((a' && (a' ==> b')) :: nil) b'
+
+% More solutions (y/n)? y
+
+% The answer substitution:
+% Out = sq ((a' && (a' ==> b')) :: nil) a' cc sq (a' :: (a' ==> b') :: nil) b'
+
+% More solutions (y/n)? y
+
+% The answer substitution:
+% Out = sq ((a' && (a' ==> b')) :: nil) a' cc sq ((a' && (a' ==> b')) :: nil) b'
+
+% More solutions (y/n)? y
+
+% The answer substitution:
+% Out = sq (a' :: (a' ==> b') :: nil) a' cc sq (a' :: (a' ==> b') :: nil) b'
+
+% More solutions (y/n)? y
+
+% The answer substitution:
+% Out = sq (a' :: (a' ==> b') :: nil) (a' && b')
+
+% More solutions (y/n)? y
+
+% The answer substitution:
+% Out = sq ((a' && (a' ==> b')) :: nil) (a' && b')
+
+% More solutions (y/n)? y
+
+% The answer substitution:
+% Out = sq nil (a' && (a' ==> b') ==> a' && b')
+
+% More solutions (y/n)? y
+
+% no (more) solutions
