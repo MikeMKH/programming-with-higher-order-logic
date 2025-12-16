@@ -34,4 +34,14 @@ type  all, some     (term -> form) -> form.
 type initial, and_r, imp_r, all_r, and_l, imp_l, all_l, all_l'
                       goal -> goal -> o.
 
+type maptac  (goal -> goal -> o) -> goal -> goal -> o.
+
+type idtac        goal -> goal -> o.
+type repeat, try  (goal -> goal -> o) -> goal -> goal -> o.
+type then, orelse, orelse!
+                  (goal -> goal -> o) -> (goal -> goal -> o) -> goal -> goal -> o.
+
+type a', b', c', d', e'  form.
+type invertible   goal -> goal -> o.
+
 end

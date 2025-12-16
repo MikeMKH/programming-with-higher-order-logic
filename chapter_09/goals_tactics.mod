@@ -70,4 +70,28 @@ all_l   (sq Gamma A) (sq ((B T)::Gamma) A) :-
 all_l'  (sq Gamma A) (sq ((B T)::Gamma') A) :- 
                memb_and_rest (all B) Gamma Gamma'.
 
+type maptac  (goal -> goal -> o) -> goal -> goal -> o.
+
+maptac Tac trueg trueg.
+maptac Tac (I1 cc I2) (O1 cc O2) :- maptac Tac I1 O1,
+                                    maptac Tac I2 O2.
+maptac Tac (allg In) (allg Out) :- pi t\ maptac Tac (In t) (Out t).
+maptac Tac In Out :- primgoal In, Tac In Out.
+
+type idtac        goal -> goal -> o.
+type repeat, try  (goal -> goal -> o) -> goal -> goal -> o.
+type then, orelse, orelse!
+                  (goal -> goal -> o) -> (goal -> goal -> o) -> goal -> goal -> o.
+type invertible   goal -> goal -> o.
+
+idtac              In In.
+then     Tac1 Tac2 In Out :- Tac1 In Mid, maptac Tac2 Mid Out.
+orelse   Tac1 Tac2 In Out :- Tac1 In Out  ; Tac2 In Out.
+orelse!  Tac1 Tac2 In Out :- Tac1 In Out, ! ; Tac2 In Out.
+repeat   Tac       In Out :- orelse (then Tac (repeat Tac)) idtac In Out.
+try      Tac       In Out :- orelse Tac idtac In Out.
+
+type a', b', c', d', e'  form.
+invertible         In Out :- repeat (orelse and_r (orelse and_l (orelse imp_r all_r))) In Out.
+
 end
