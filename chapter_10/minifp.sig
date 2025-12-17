@@ -17,4 +17,6 @@ type cons, car, cdr, nullp, consp, null  tm. % for lists
 type greater, zerop, minus, sum, times   tm. % for integers
 type equal                               tm. % general equality
 
+type prog     string -> tm -> o.
+
 end
