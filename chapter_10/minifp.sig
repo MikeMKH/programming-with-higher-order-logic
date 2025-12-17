@@ -19,4 +19,10 @@ type equal                               tm. % general equality
 
 type prog     string -> tm -> o.
 
+kind ty                type.
+type int, bool         ty.
+type lst               ty -> ty.
+type arr               ty -> ty -> ty.
+type typeof            tm -> ty -> o.
+
 end
