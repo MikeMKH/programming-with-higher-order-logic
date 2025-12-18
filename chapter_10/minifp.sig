@@ -35,4 +35,6 @@ type spec        int -> tm -> list tm -> tm. % for specials
 
 type if          o -> o -> o -> o.
 
+type eq          tm -> tm -> o.
+
 end

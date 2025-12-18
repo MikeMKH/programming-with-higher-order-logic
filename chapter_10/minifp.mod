@@ -117,6 +117,11 @@ eval_spec equal (C::B::nil) V   :- if (B = C) (V = tt) (V = ff).
 eval_spec greater ((i N)::(i M)::nil) V :-
                                    if (M > N) (V = tt) (V = ff).
 
+type eq          tm -> tm -> o.
+eq (i N) (i N)  &  eq tt tt  &  eq ff ff.
+eq null null.
+eq (cns X Y) (cns U V) :- eq X U, eq Y V.
+
 end
 
 % [minifp] ?- sigma Exp\ prog Name Exp, typeof Exp Ty.
