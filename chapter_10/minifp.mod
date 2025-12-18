@@ -64,6 +64,59 @@ typeof (abs w\ w) (arr int int).
 typeof (abs w\ w) (arr bool bool).
 pi t\ typeof (abs w\ w) (arr t t).
 
+type eval        tm -> tm -> o.
+type val         tm -> o.
+type apply       tm -> tm -> tm -> o.
+type eval_spec   tm -> list tm -> tm -> o.
+type special     int -> tm -> o.
+
+type spec        int -> tm -> list tm -> tm. % for specials
+
+type if          o -> o -> o -> o.
+if P Q R :- P, !, Q.
+if P Q R :- R.
+
+% Description of which expressions denote values
+val (abs _) & val (i _)  & val tt   & val ff  & val null.
+val (cns _ _) & val (spec _ _ _).
+
+% eval and apply are the heart of evaluation
+eval V V               :- val V.
+eval (M @ N) V         :- eval M F, eval N U, apply F U V.
+eval (fixpt R)    V    :- eval (R (fixpt R)) V.
+eval (cond C L R) V    :- eval C B, if (B = tt) (eval L V)
+                                                (eval R V).
+eval F (spec I F nil)  :- special I F.
+
+apply (abs R) U V :- eval (R U) V.
+apply (spec 1 F Args) U V :- eval_spec F (U::Args) V.
+apply (spec C F Args) U (spec D F (U::Args)) :- C > 1, D is C - 1.
+
+% Declaration of the arity of the built-in functions 
+special 2 or    & special 2 and   & special 2 equal & 
+special 1 car   & special 1 cdr   & special 2 cons  &
+special 1 nullp & special 1 consp & special 1 zerop & 
+special 2 minus & special 2 sum   & special 2 times &
+special 2 greater.
+
+% Description of how to compute the built-in functions
+eval_spec car   ((cns V U)::nil) V.
+eval_spec cdr   ((cns V U)::nil) U.
+eval_spec cons  (U::V::nil) (cns V U).
+eval_spec nullp (U::nil) V :- if (U = null) (V = tt) (V = ff).
+eval_spec consp (U::nil) V :- if (U = null) (V = ff) (V = tt).
+eval_spec and (C::B::nil) V :- if (B = ff) (V = ff) 
+                                  (if (C = ff) (V = ff) (V = tt)).
+eval_spec or  (C::B::nil) V :- if (B = tt) (V = tt) 
+                                  (if (C = tt) (V = tt) (V = ff)).
+eval_spec minus ((i N)::(i M)::nil) (i V) :- V is M - N.
+eval_spec sum   ((i N)::(i M)::nil) (i V) :- V is M + N.
+eval_spec times ((i N)::(i M)::nil) (i V) :- V is M * N.
+eval_spec zerop ((i N)::nil) V  :- if (N = 0) (V = tt) (V = ff).
+eval_spec equal (C::B::nil) V   :- if (B = C) (V = tt) (V = ff).
+eval_spec greater ((i N)::(i M)::nil) V :-
+                                   if (M > N) (V = tt) (V = ff).
+
 end
 
 % [minifp] ?- sigma Exp\ prog Name Exp, typeof Exp Ty.
@@ -89,6 +142,36 @@ end
 % The answer substitution:
 % Ty = arr (arr _T1 _T2) (arr (lst _T1) (lst _T2))
 % Name = "map"
+
+% More solutions (y/n)? y
+
+% no (more) solutions
+
+% [minifp] ?- prog "fib" F, eval (F @ (i 12)) V.
+
+% The answer substitution:
+% V = i 144
+% F = fixpt (W1\ abs (W2\ cond (zerop @ W2) (i 0) (cond (equal @ W2 @ i 1) (i 1) (sum @ (W1 @ (minus @ W2 @ i 1)) @ (W1 @ (minus @ W2 @ i 2))))))
+
+% More solutions (y/n)? y
+
+% no (more) solutions
+
+% [minifp] ?- prog "fib" Fib, prog "map" Map, eval (Map @ Fib @ (cons @ (i 9) @ (cons @ (i 4) @ null))) V.
+
+% The answer substitution:
+% V = cns (i 34) (cns (i 3) null)
+% Map = fixpt (W1\ abs (W2\ abs (W3\ cond (nullp @ W3) null (cons @ (W2 @ (car @ W3)) @ (W1 @ W2 @ (cdr @ W3))))))
+% Fib = fixpt (W1\ abs (W2\ cond (zerop @ W2) (i 0) (cond (equal @ W2 @ i 1) (i 1) (sum @ (W1 @ (minus @ W2 @ i 1)) @ (W1 @ (minus @ W2 @ i 2))))))
+
+% More solutions (y/n)? y
+
+% no (more) solutions
+
+% [minifp] ?- eval (equal @ (abs x\x) @ (abs y\y)) V.
+
+% The answer substitution:
+% V = tt
 
 % More solutions (y/n)? y
 

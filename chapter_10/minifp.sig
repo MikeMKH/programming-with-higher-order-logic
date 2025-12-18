@@ -25,4 +25,14 @@ type lst               ty -> ty.
 type arr               ty -> ty -> ty.
 type typeof            tm -> ty -> o.
 
+type eval        tm -> tm -> o.
+type val         tm -> o.
+type apply       tm -> tm -> tm -> o.
+type eval_spec   tm -> list tm -> tm -> o.
+type special     int -> tm -> o.
+
+type spec        int -> tm -> list tm -> tm. % for specials
+
+type if          o -> o -> o -> o.
+
 end
