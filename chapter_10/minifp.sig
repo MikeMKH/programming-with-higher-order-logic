@@ -37,4 +37,8 @@ type if          o -> o -> o -> o.
 
 type eq          tm -> tm -> o.
 
+type non_val, redex  tm -> o.
+type reduce, evalc   tm -> tm -> o.
+type context         tm -> (tm -> tm) -> tm -> o.
+
 end

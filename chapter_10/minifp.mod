@@ -122,6 +122,42 @@ eq (i N) (i N)  &  eq tt tt  &  eq ff ff.
 eq null null.
 eq (cns X Y) (cns U V) :- eq X U, eq Y V.
 
+type non_val, redex  tm -> o.
+type reduce, evalc   tm -> tm -> o.
+type context         tm -> (tm -> tm) -> tm -> o.
+
+% Declare which expressions are not values
+non_val (_ @ _) & non_val (fixpt _) & non_val (cond _ _ _).
+non_val M :- special _ M.
+
+% Declare which expressions are top-level reducible expressions
+redex F       :- special _ F.
+redex (U @ V) :- val U, val V.
+redex (cond tt _ _) & redex (cond ff _ _) & redex (fixpt _).
+
+% Describe how to reduce a redex
+reduce ((abs R) @ N) (R N).
+reduce (fixpt R) (R (fixpt R)).
+reduce (cond tt L R) L.
+reduce (cond ff L R) R.
+reduce F (spec C F nil) :- special C F.
+reduce ((spec 1 Fun Args) @ N) V :- eval_spec Fun (N::Args) V.
+reduce ((spec C Fun Args) @ N) (spec D Fun (N::Args)) :-
+  C > 1, D is C - 1.
+
+% Separate an expression into an evaluation context and a redex
+context R (x\ x) R :- redex R.
+context (cond M N P) (x\ cond (E x) N P) R :-
+  non_val M, context M E R.
+context (M @ N) (x\ (E x) @ N) R :-
+  non_val M, context M E R.
+context (V @ M) (x\ V @ (E x)) R :-
+  val V, non_val M, context M E R.
+
+% Evaluation repeatedly uses evaluation contexts and redexes
+evalc V V :- val V.
+evalc M V :- context M E R, reduce R N, evalc (E N) V.
+
 end
 
 % [minifp] ?- sigma Exp\ prog Name Exp, typeof Exp Ty.
@@ -177,6 +213,26 @@ end
 
 % The answer substitution:
 % V = tt
+
+% More solutions (y/n)? y
+
+% no (more) solutions
+
+% [minifp] ?- context (cond ((abs x\ ff) @ tt) (i 2) (i 3)) E R.
+
+% The answer substitution:
+% R = abs (W1\ ff) @ tt
+% E = W1\ cond W1 (i 2) (i 3)
+
+% More solutions (y/n)? y
+
+% no (more) solutions
+
+% [minifp] ?- context (cond ff ((abs x\ i 2) @ (i 3)) (i 4)) E R.
+
+% The answer substitution:
+% R = cond ff (abs (W1\ i 2) @ i 3) (i 4)
+% E = W1\ W1
 
 % More solutions (y/n)? y
 
