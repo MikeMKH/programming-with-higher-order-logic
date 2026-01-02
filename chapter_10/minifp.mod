@@ -158,6 +158,10 @@ context (V @ M) (x\ V @ (E x)) R :-
 evalc V V :- val V.
 evalc M V :- context M E R, reduce R N, evalc (E N) V.
 
+% Partial evaluation of miniFP programs
+type mixeval         tm -> tm -> o.
+mixeval (abs R) (abs S) :- pi k\ val k => eval (R k) (S k).
+
 end
 
 % [minifp] ?- sigma Exp\ prog Name Exp, typeof Exp Ty.
@@ -233,6 +237,27 @@ end
 % The answer substitution:
 % R = cond ff (abs (W1\ i 2) @ i 3) (i 4)
 % E = W1\ W1
+
+% More solutions (y/n)? y
+
+% no (more) solutions
+
+% [minifp] ?- prog "map" (fixpt Body), Unfold = (Body (fixpt Body)).
+
+% The answer substitution:
+% Unfold = abs (W1\ abs (W2\ cond (nullp @ W2) null (cons @ (W1 @ (car @ W2)) @ (fixpt (W3\ abs (W4\ abs (W5\ cond (nullp @ W5) null (cons @ (W4 @ (car @ W5)) @ (W3 @ W4 @ (cdr @ W5)))))) @ W1 @ (cdr @ W2)))))
+% Body = W1\ abs (W2\ abs (W3\ cond (nullp @ W3) null (cons @ (W2 @ (car @ W3)) @ (W1 @ W2 @ (cdr @ W3)))))
+
+% More solutions (y/n)? y
+
+% no (more) solutions
+
+% [minifp] ?- prog "appnd" App, eval (App @ (cons @ (i 1) @ (cons @ (i 5) @ null))) R, mixeval R S.
+
+% The answer substitution:
+% S = abs (W1\ cns (i 1) (cns (i 5) W1))
+% R = abs (W1\ cond (nullp @ cns (i 1) (cns (i 5) null)) W1 (cons @ (car @ cns (i 1) (cns (i 5) null)) @ (fixpt (W2\ abs (W3\ abs (W4\ cond (nullp @ W3) W4 (cons @ (car @ W3) @ (W2 @ (cdr @ W3) @ W4))))) @ (cdr @ cns (i 1) (cns (i 5) null)) @ W1)))
+% App = fixpt (W1\ abs (W2\ abs (W3\ cond (nullp @ W2) W3 (cons @ (car @ W2) @ (W1 @ (cdr @ W2) @ W3)))))
 
 % More solutions (y/n)? y
 

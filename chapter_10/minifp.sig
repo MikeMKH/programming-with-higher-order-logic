@@ -41,4 +41,6 @@ type non_val, redex  tm -> o.
 type reduce, evalc   tm -> tm -> o.
 type context         tm -> (tm -> tm) -> tm -> o.
 
+type mixeval         tm -> tm -> o.
+
 end
