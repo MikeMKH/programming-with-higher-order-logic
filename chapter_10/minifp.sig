@@ -43,6 +43,11 @@ type context         tm -> (tm -> tm) -> tm -> o.
 
 type mixeval         tm -> tm -> o.
 
-type ftrans, phi     tm -> tm -> o.
+% Transformation to continuation passing style without administrative redices
+% type ftrans, phi     tm -> tm -> o.
+
+% Transformation to continuation passing style with administrative redices
+type adm                              (tm -> tm) -> tm.
+type phi, ftrans, admred, red1, red   tm -> tm -> o.
 
 end

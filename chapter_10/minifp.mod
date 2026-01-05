@@ -162,15 +162,40 @@ evalc M V :- context M E R, reduce R N, evalc (E N) V.
 type mixeval         tm -> tm -> o.
 mixeval (abs R) (abs S) :- pi k\ val k => eval (R k) (S k).
 
-% Transformation to continuation passing style
-type ftrans, phi     tm -> tm -> o.
+% Transformation to continuation passing style without administrative
+% type ftrans, phi     tm -> tm -> o.
 
-ftrans (abs V) (abs k\ k @ U) :- phi (abs V) U.
-ftrans (M @ N) (abs k\ P @ (abs m\ Q @ (abs n\ m @ k @ n))) :-
+% ftrans (abs V) (abs k\ k @ U) :- phi (abs V) U.
+% ftrans (M @ N) (abs k\ P @ (abs m\ Q @ (abs n\ m @ k @ n))) :-
+%     ftrans M P, ftrans N Q.
+
+% phi (abs M) (abs k\ abs x\ (P x) @ k) :-
+%     pi x\ pi y\ ftrans x (abs k\ k @ y) => ftrans (M x) (P y).
+
+% % [minifp] ?- ftrans ((abs u\u) @ (abs u\u)) F.
+
+% % The answer substitution:
+% % F = abs (W1\ abs (W2\ W2 @ abs (W3\ abs (W4\ abs (W5\ W5 @ W4) @ W3))) @ abs (W2\ abs (W3\ W3 @ abs (W4\ abs (W5\ abs (W6\ W6 @ W5) @ W4))) @ abs (W3\ W2 @ W1 @ W3)))
+
+% Transformation to continuation passing style with administrative
+type adm                              (tm -> tm) -> tm.
+type phi, ftrans, admred, red1, red   tm -> tm -> o.
+
+ftrans (abs V) (adm k\ k @ U) :- phi (abs V) U.
+ftrans (M @ N) (adm k\ P @ (adm m\ Q @ (adm n\ m @ k @ n))) :-
     ftrans M P, ftrans N Q.
 
 phi (abs M) (abs k\ abs x\ (P x) @ k) :-
-    pi x\ pi y\ ftrans x (abs k\ k @ y) => ftrans (M x) (P y).
+    pi x\ pi y\ ftrans x (adm k\ k @ y) => ftrans (M x) (P y).
+
+admred ((adm R) @ N) (R N).
+
+red1 M N :- admred M N.
+red1 (M @ N) (M' @ N) & red1 (N @ M) (N @ M') :- red1 M M'.
+red1 (adm R) (abs S)  & red1 (abs R) (abs S)  :- pi x\ red1 (R x) (S x).
+
+red M N :- red1 M P, !, red P N.
+red M M.
 
 end
 
@@ -273,7 +298,12 @@ end
 
 % no (more) solutions
 
-% [minifp] ?- ftrans ((abs u\u) @ (abs u\u)) F.
+% [minifp] ?- ftrans ((abs x\x) @ (abs x\x)) T, red T S.
 
 % The answer substitution:
-% F = abs (W1\ abs (W2\ W2 @ abs (W3\ abs (W4\ abs (W5\ W5 @ W4) @ W3))) @ abs (W2\ abs (W3\ W3 @ abs (W4\ abs (W5\ abs (W6\ W6 @ W5) @ W4))) @ abs (W3\ W2 @ W1 @ W3)))
+% S = abs (W1\ abs (W2\ abs (W3\ W2 @ W3)) @ W1 @ abs (W2\ abs (W3\ W2 @ W3)))
+% T = adm (W1\ adm (W2\ W2 @ abs (W3\ abs (W4\ adm (W5\ W5 @ W4) @ W3))) @ adm (W2\ adm (W3\ W3 @ abs (W4\ abs (W5\ adm (W6\ W6 @ W5) @ W4))) @ adm (W3\ W2 @ W1 @ W3)))
+
+% More solutions (y/n)? y
+
+% no (more) solutions
