@@ -162,6 +162,16 @@ evalc M V :- context M E R, reduce R N, evalc (E N) V.
 type mixeval         tm -> tm -> o.
 mixeval (abs R) (abs S) :- pi k\ val k => eval (R k) (S k).
 
+% Transformation to continuation passing style
+type ftrans, phi     tm -> tm -> o.
+
+ftrans (abs V) (abs k\ k @ U) :- phi (abs V) U.
+ftrans (M @ N) (abs k\ P @ (abs m\ Q @ (abs n\ m @ k @ n))) :-
+    ftrans M P, ftrans N Q.
+
+phi (abs M) (abs k\ abs x\ (P x) @ k) :-
+    pi x\ pi y\ ftrans x (abs k\ k @ y) => ftrans (M x) (P y).
+
 end
 
 % [minifp] ?- sigma Exp\ prog Name Exp, typeof Exp Ty.
@@ -262,3 +272,8 @@ end
 % More solutions (y/n)? y
 
 % no (more) solutions
+
+% [minifp] ?- ftrans ((abs u\u) @ (abs u\u)) F.
+
+% The answer substitution:
+% F = abs (W1\ abs (W2\ W2 @ abs (W3\ abs (W4\ abs (W5\ W5 @ W4) @ W3))) @ abs (W2\ abs (W3\ W3 @ abs (W4\ abs (W5\ abs (W6\ W6 @ W5) @ W4))) @ abs (W3\ W2 @ W1 @ W3)))

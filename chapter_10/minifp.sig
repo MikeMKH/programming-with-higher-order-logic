@@ -43,4 +43,6 @@ type context         tm -> (tm -> tm) -> tm -> o.
 
 type mixeval         tm -> tm -> o.
 
+type ftrans, phi     tm -> tm -> o.
+
 end
