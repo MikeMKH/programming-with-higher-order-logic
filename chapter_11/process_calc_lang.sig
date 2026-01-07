@@ -14,4 +14,11 @@ type bang         proc -> proc.
 type a, b, c      name.
 type example      int -> proc -> o.
 
+kind action       type.
+type tau          action.
+type up, dn       name -> name -> action.
+
+type one          proc ->          action ->           proc  -> o.
+type onep         proc -> (name -> action) -> (name -> proc) -> o.
+
 end
