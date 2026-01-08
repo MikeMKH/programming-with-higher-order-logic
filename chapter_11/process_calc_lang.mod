@@ -64,4 +64,123 @@ one  (par P Q) tau (nu y\ par (P' y) (Q' y)) &
 one  (par Q P) tau (nu y\ par (Q' y) (P' y)) :-
                            onep P (up X) P', onep Q (dn X) Q'.
 
+kind trace        type.
+type empty        trace.
+type tr           action -> trace -> trace.  
+type trp          (name -> action) -> (name -> trace) -> trace.  
+type trace        proc -> trace -> o.
+
+trace P empty.
+trace P (tr Act Tr) :- one P Act Q, trace Q Tr.
+trace P (trp (up X) Tr) :- onep P (up X) Q, 
+                           pi x\ trace (Q x) (Tr x).
+trace P (tr (dn X Y) Tr) :- onep P (dn X) Q, trace (Q Y) Tr.
+
 end
+
+% [process_calc_lang] ?- example 1 P, one P A P'.
+
+% The answer substitution:
+% P' = par (in b (W1\ null)) null
+% A = up b a
+% P = par (in b (W1\ null)) (out b a null)
+
+% More solutions (y/n)? y
+
+% The answer substitution:
+% P' = par null null
+% A = tau
+% P = par (in b (W1\ null)) (out b a null)
+
+% More solutions (y/n)? n
+
+% yes
+
+% [process_calc_lang] ?- example 1 P, onep P A P'.
+
+% The answer substitution:
+% P' = W1\ par null (out b a null)
+% A = dn b
+% P = par (in b (W1\ null)) (out b a null)
+
+% More solutions (y/n)? n
+
+% yes
+
+% [process_calc_lang] ?- example 3 P, one P A P'.
+
+% The answer substitution:
+% P' = nu (W1\ par null null)
+% A = tau
+% P = nu (W1\ par (in W1 (W2\ null)) (out W1 a null))
+
+% More solutions (y/n)? n
+
+% yes
+
+% [process_calc_lang] ?- example 1 P, trace P Tr.
+
+% The answer substitution:
+% Tr = empty
+% P = par (in b (W1\ null)) (out b a null)
+
+% More solutions (y/n)? y
+
+% The answer substitution:
+% Tr = tr (up b a) empty
+% P = par (in b (W1\ null)) (out b a null)
+
+% More solutions (y/n)? y
+
+% The answer substitution:
+% Tr = tr (up b a) (tr (dn b _T1) empty)
+% P = par (in b (W1\ null)) (out b a null)
+
+% More solutions (y/n)? y
+
+% The answer substitution:
+% Tr = tr (up b a) (tr (dn b _T1) empty)
+% P = par (in b (W1\ null)) (out b a null)
+
+% More solutions (y/n)? n
+
+% yes
+
+% [process_calc_lang] ?- trace (in a Y\ plus (match Y b (out Y Y null)) (match Y c (out Y Y null))) Tr.
+
+% The answer substitution:
+% Tr = empty
+
+% More solutions (y/n)? y
+
+% The answer substitution:
+% Tr = tr (dn a _T1) empty
+
+% More solutions (y/n)? y
+
+% The answer substitution:
+% Tr = tr (dn a b) (tr (up b b) empty)
+
+% More solutions (y/n)? y
+
+% The answer substitution:
+% Tr = tr (dn a c) (tr (up c c) empty)
+
+% More solutions (y/n)? y
+
+% The answer substitution:
+% Tr = tr (dn a _T1) empty
+
+% More solutions (y/n)? y
+
+% The answer substitution:
+% Tr = tr (dn a b) (tr (up b b) empty)
+
+% More solutions (y/n)? y
+
+% The answer substitution:
+% Tr = tr (dn a c) (tr (up c c) empty)
+
+% More solutions (y/n)? y
+
+% no (more) solutions

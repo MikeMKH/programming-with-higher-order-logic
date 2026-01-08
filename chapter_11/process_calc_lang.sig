@@ -21,4 +21,10 @@ type up, dn       name -> name -> action.
 type one          proc ->          action ->           proc  -> o.
 type onep         proc -> (name -> action) -> (name -> proc) -> o.
 
+kind trace        type.
+type empty        trace.
+type tr           action -> trace -> trace.  
+type trp          (name -> action) -> (name -> trace) -> trace.  
+type trace        proc -> trace -> o.
+
 end
