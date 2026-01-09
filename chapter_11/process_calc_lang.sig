@@ -32,4 +32,7 @@ type comptrace           proc -> trace -> o.
 type separating_trace    proc -> proc -> trace -> o.
 type trace_equiv         proc -> proc -> o.
 
+type  foreach2   (A -> B -> o) -> (A -> B -> o) -> o.
+type  sim        proc -> proc -> o.
+
 end

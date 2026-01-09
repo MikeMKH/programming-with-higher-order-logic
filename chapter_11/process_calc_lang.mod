@@ -96,6 +96,17 @@ separating_trace P Q T :- trace P T,  not (trace Q T).
 trace_equiv P Q :- not (separating_trace P Q _), 
                    not (separating_trace Q P _).
 
+type  foreach2   (A -> B -> o) -> (A -> B -> o) -> o.
+type  sim        proc -> proc -> o.
+
+foreach2 P Q :- not (sigma X\ sigma Y\ P X Y, not (Q X Y)).
+
+sim P Q :- foreach2 (A\P'\ one P A P')
+                    (A\P'\ sigma Q'\ one Q A Q', sim P' Q'),
+           foreach2 (A\P'\ onep P A P')
+                    (A\P'\ sigma Q'\ onep Q A Q', 
+                           pi x\ sim (P' x) (Q' x)).
+
 end
 
 % [process_calc_lang] ?- example 1 P, one P A P'.
@@ -262,3 +273,8 @@ end
 % [process_calc_lang] ?- example 7 P, example 8 Q, separating_trace Q P T.
 
 % no (more) solutions
+
+% [process_calc_lang] ?- sim (in a x\ par (in x y\ null) (out c b null))
+%                            (in a x\ plus (in x y\ out c b null) (out c b (in x y\ null))).
+
+% yes
