@@ -76,6 +76,26 @@ trace P (trp (up X) Tr) :- onep P (up X) Q,
                            pi x\ trace (Q x) (Tr x).
 trace P (tr (dn X Y) Tr) :- onep P (dn X) Q, trace (Q Y) Tr.
 
+type possible, terminal  proc -> o.
+type comptrace           proc -> trace -> o.
+type separating_trace    proc -> proc -> trace -> o.
+type trace_equiv         proc -> proc -> o.
+
+possible P :- one P _ _ ; onep P _ _.
+terminal P :- not (possible P).
+
+comptrace P empty :- terminal P.
+comptrace P (tr  Act     Tr) :- one  P Act Q, comptrace Q Tr.
+comptrace P (tr (dn X Y) Tr) :- onep P (dn X) P',
+                                comptrace (P' Y) Tr.
+comptrace P (trp (up X)  Tr) :- onep P (up X) P',
+                                pi x\ comptrace (P' x) (Tr x).
+
+separating_trace P Q T :- trace P T,  not (trace Q T).
+
+trace_equiv P Q :- not (separating_trace P Q _), 
+                   not (separating_trace Q P _).
+
 end
 
 % [process_calc_lang] ?- example 1 P, one P A P'.
@@ -182,5 +202,63 @@ end
 % Tr = tr (dn a c) (tr (up c c) empty)
 
 % More solutions (y/n)? y
+
+% no (more) solutions
+
+% [process_calc_lang] ?- example 1 P, comptrace P Tr.
+
+% The answer substitution:
+% Tr = tr (up b a) (tr (dn b _T1) empty)
+% P = par (in b (W1\ null)) (out b a null)
+
+% More solutions (y/n)? y
+
+% The answer substitution:
+% Tr = tr (up b a) (tr (dn b _T1) empty)
+% P = par (in b (W1\ null)) (out b a null)
+
+% More solutions (y/n)? y
+
+% The answer substitution:
+% Tr = tr tau empty
+% P = par (in b (W1\ null)) (out b a null)
+
+% More solutions (y/n)? y
+
+% The answer substitution:
+% Tr = tr tau empty
+% P = par (in b (W1\ null)) (out b a null)
+
+% More solutions (y/n)? n
+
+% yes
+
+% [process_calc_lang] ?- example 5 P, example 6 Q, separating_trace P Q T.
+
+% The answer substitution:
+% T = tr (dn a b) (tr tau empty)
+% Q = in a (W1\ plus (in W1 (W2\ out b b null)) (out b b (in W1 (W2\ null))))
+% P = in a (W1\ par (in W1 (W2\ null)) (out b b null))
+
+% More solutions (y/n)? y
+
+% The answer substitution:
+% T = tr (dn a b) (tr tau empty)
+% Q = in a (W1\ plus (in W1 (W2\ out b b null)) (out b b (in W1 (W2\ null))))
+% P = in a (W1\ par (in W1 (W2\ null)) (out b b null))
+
+% More solutions (y/n)? n
+
+% yes
+
+% [process_calc_lang] ?- example 5 P, example 6 Q, separating_trace Q P T.
+
+% no (more) solutions
+
+% [process_calc_lang] ?- example 7 P, example 8 Q, separating_trace P Q T.
+
+% no (more) solutions
+
+% [process_calc_lang] ?- example 7 P, example 8 Q, separating_trace Q P T.
 
 % no (more) solutions

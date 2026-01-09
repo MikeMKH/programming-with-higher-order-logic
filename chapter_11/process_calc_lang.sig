@@ -27,4 +27,9 @@ type tr           action -> trace -> trace.
 type trp          (name -> action) -> (name -> trace) -> trace.  
 type trace        proc -> trace -> o.
 
+type possible, terminal  proc -> o.
+type comptrace           proc -> trace -> o.
+type separating_trace    proc -> proc -> trace -> o.
+type trace_equiv         proc -> proc -> o.
+
 end
